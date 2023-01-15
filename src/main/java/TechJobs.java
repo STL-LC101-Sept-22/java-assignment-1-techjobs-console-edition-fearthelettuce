@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class TechJobs {
 
     static Scanner in = new Scanner(System.in);
+    private static String asteriskLine = "*****";
 
     public static void main (String[] args) {
 
@@ -59,7 +61,7 @@ public class TechJobs {
 
                 // What is their search term?
                 System.out.println("\nSearch term:");
-                String searchTerm = in.nextLine();
+                String searchTerm = in.nextLine().toLowerCase();
 
                 if (searchField.equals("all")) {
                     printJobs(JobData.findByValue(searchTerm));
@@ -119,7 +121,25 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.size() == 0) {
+            System.out.println("No Results");
+            return;
+        }
+        for (int i = 0; i < someJobs.size(); i++) {
+            printJobDetails(someJobs.get(i));
+//            printJobDetails("TestLine");
+//            if (i < someJobs.size()) {
+//                System.out.println("");
+//            }
+        }
+//        System.out.println("");
+    }
+    private static void printJobDetails(HashMap<String, String> jobListing) {
 
-        System.out.println("printJobs is not implemented yet");
+        System.out.println("\r\n" + asteriskLine);
+        for (Map.Entry<String, String> entry : jobListing.entrySet()){
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        System.out.println(asteriskLine);
     }
 }
