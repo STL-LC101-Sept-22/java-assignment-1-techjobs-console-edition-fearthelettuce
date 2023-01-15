@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,8 @@ import java.util.Scanner;
 public class TechJobs {
 
     static Scanner in = new Scanner(System.in);
+    private static String asteriskLine = "*****";
+    private static final String newLine = System.getProperty("line.separator");
 
     public static void main (String[] args) {
 
@@ -44,7 +47,7 @@ public class TechJobs {
 
                     ArrayList<String> results = JobData.findAll(columnChoice);
 
-                    System.out.println("\n*** All " + columnChoices.get(columnChoice) + " Values ***");
+                    System.out.println(newLine + "*** All " + columnChoices.get(columnChoice) + " Values ***");
 
                     // Print list of skills, employers, etc
                     for (String item : results) {
@@ -58,8 +61,8 @@ public class TechJobs {
                 String searchField = getUserSelection("Search by:", columnChoices);
 
                 // What is their search term?
-                System.out.println("\nSearch term:");
-                String searchTerm = in.nextLine();
+                System.out.println(newLine +"Search term:");
+                String searchTerm = in.nextLine().toLowerCase();
 
                 if (searchField.equals("all")) {
                     printJobs(JobData.findByValue(searchTerm));
@@ -87,7 +90,7 @@ public class TechJobs {
 
         do {
 
-            System.out.println("\n" + menuHeader);
+            System.out.println(newLine+ menuHeader);
 
             // Print available choices
             for (int j = 0; j < choiceKeys.length; j++) {
@@ -119,7 +122,25 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.size() == 0) {
+            System.out.print("No Results");
+            return;
+        }
+        for (int i = 0; i < someJobs.size(); i++) {
+            printJobDetails(someJobs.get(i));
+//            printJobDetails("TestLine");
+//            if (i < someJobs.size()) {
+//                System.out.println("");
+//            }
+        }
+//        System.out.println("");
+    }
+    private static void printJobDetails(HashMap<String, String> jobListing) {
 
-        System.out.println("printJobs is not implemented yet");
+        System.out.println(newLine + asteriskLine);
+        for (Map.Entry<String, String> entry : jobListing.entrySet()){
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        System.out.println(asteriskLine);
     }
 }

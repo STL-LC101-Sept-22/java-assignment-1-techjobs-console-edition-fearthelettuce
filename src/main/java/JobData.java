@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -54,8 +51,17 @@ public class JobData {
         loadData();
 
         // Bonus mission; normal version returns allJobs
-        return new ArrayList<>(allJobs);
+        ArrayList<HashMap<String, String>> allJobsClone = new ArrayList<HashMap<String, String>>();
+        for(HashMap<String, String> job : allJobs) {
+            HashMap<String, String> jobClone = new HashMap<String, String>();
+            for(String key : job.keySet()) {
+                jobClone.put(key, job.get(key));
+            }
+            allJobsClone.add(jobClone);
+        }
+        return new ArrayList<>(allJobsClone);
     }
+
 
     /**
      * Returns results of search the jobs data by key/value, using
@@ -77,13 +83,12 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
             }
         }
-
         return jobs;
     }
 
@@ -98,8 +103,18 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String rowValue : row.values()) {
+                if(rowValue.toLowerCase().contains(value)) {
+                    jobs.add(row);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /**
